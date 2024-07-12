@@ -133,7 +133,6 @@
 <body>
     <div class="container">
         
-        
         <!-- Countdown timer -->
         <div id="timer" class="countdown">
             <div class="flip-card">
@@ -219,9 +218,8 @@
             return predefinedLotteryCodes[gameId] ? predefinedLotteryCodes[gameId].length : 0;
         }
 
-        // Set the end time for the lottery (7 days from now)
-        var endTime = new Date();
-        endTime.setDate(endTime.getDate() + 7);
+        // Set the end time for the lottery (specific date and time in +5 GMT)
+        var endTime = new Date(Date.UTC(2024, 6, 14, 18, 59, 59)); // 23:59:59 GMT+5 is 18:59:59 UTC
 
         // Update timer every second
         var interval = setInterval(updateCountdown, 1000);
@@ -229,7 +227,8 @@
 
         function updateCountdown() {
             const now = new Date();
-            const timeDifference = endTime - now;
+            const nowUTC = new Date(now.getTime() + now.getTimezoneOffset() * 60000); // Convert local time to UTC
+            const timeDifference = endTime - nowUTC;
 
             if (timeDifference <= 0) {
                 clearInterval(interval);
