@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            background-color: #4b0000;
+            margin: 0;
+            font-family: 'Cinzel', serif;
+            color: #ffd700;
+            background: url('https://s12.gifyu.com/images/StgUe.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+            border-radius: 50px;
+            max-width: 800px;
+            margin-top: 450px; /* Move the container lower */
+        }
+
+        .entry-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .entry-list li {
+            margin-bottom: 10px;
+        }
+
+        /* Countdown timer styles */
+        #timer {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            background: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .flip-card {
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 70px;
+            height: 100px;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg);
+            transition: transform 0.6s ease-out;
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            background-color: #8b0000;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ffd700;
+        }
+
+        .flip-card-back {
+            transform: rotateX(-180deg);
+        }
+
+        .label {
+            text-align: center;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        /* Search form styles */
+        #entryForm {
+            margin-top: 20px;
+        }
+
+        #gameId {
+            padding: 10px;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            background-color: #8b0000;
+            color: #ffd700;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            width: 70%;
+            box-shadow: 0 0 10px #ffd700;
+            margin-bottom: 20px;
+        }
+
+        #entryForm button {
+            padding: 10px 20px;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            background-color: #8b0000;
+            color: #ffd700;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #ffd700;
+        }
+
+        #entryForm button:hover {
+            background-color: #ffd700;
+            color: #8b0000;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        
+        <!-- Countdown timer -->
+        <div id="timer" class="countdown">
+            <div class="flip-card">
+                <div class="flip-card-inner" id="days">
+                    <div class="flip-card-front">
+                        <div class="number" id="days-front">00</div>
+                    </div>
+                    <div class="flip-card-back">
+                        <div class="number" id="days-back">00</div>
+                    </div>
+                </div>
+                <div class="label">DAYS</div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-card-inner" id="hours">
+                    <div class="flip-card-front">
+                        <div class="number" id="hours-front">00</div>
+                    </div>
+                    <div class="flip-card-back">
+                        <div class="number" id="hours-back">00</div>
+                    </div>
+                </div>
+                <div class="label">HOURS</div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-card-inner" id="minutes">
+                    <div class="flip-card-front">
+                        <div class="number" id="minutes-front">00</div>
+                    </div>
+                    <div class="flip-card-back">
+                        <div class="number" id="minutes-back">00</div>
+                    </div>
+                </div>
+                <div class="label">MINUTES</div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-card-inner" id="seconds">
+                    <div class="flip-card-front">
+                        <div class="number" id="seconds-front">00</div>
+                    </div>
+                    <div class="flip-card-back">
+                        <div class="number" id="seconds-back">00</div>
+                    </div>
+                </div>
+                <div class="label">SECONDS</div>
+            </div>
+        </div>
+
+        <!-- Live time information -->
+        <p>Lottery Live Time: 7 Days</p>
+        
+        <!-- Search form -->
+        <form id="entryForm">
+            <label for="gameId">Game ID:</label>
+            <input type="text" id="gameId" name="gameId" required>
+            <br>
+            <button type="submit">Search Entries</button>
+        </form>
+        
+        <!-- Entry list -->
+        <div id="entryList">
+            <!-- Entries will be dynamically added here --> 
+        </div>
+    </div>
+
+    <script>
+        // Object to store predefined lottery codes for specific game IDs
+        var predefinedLotteryCodes = {
+            'ABC123': ['ABC123-ABCDEF', 'ABC123-123456', 'ABC123-789ABC'],
+            'DEF456': [],
+            'GHI789': ['GHI789-ABC123', 'GHI789-DEF456', 'GHI789-456789', 'GHI789-XYZ123'],
+            'DADADA1231': ['I789-ABC3']
+        };
+
+        // Function to get predefined lottery codes for a specific game ID
+        function getLotteryCodes(gameId) {
+            return predefinedLotteryCodes[gameId] || [];
+        }
+
+        // Function to get entries count for a specific game ID
+        function getEntriesCount(gameId) {
+            // Return the count of entries associated with the game ID
+            return predefinedLotteryCodes[gameId] ? predefinedLotteryCodes[gameId].length : 0;
+        }
+
+        // Set the end time for the lottery (7 days from now)
+        var endTime = new Date();
+        endTime.setDate(endTime.getDate() + 7);
+
+        // Update timer every second
+        var interval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        function updateCountdown() {
+            const now = new Date();
+            const timeDifference = endTime - now;
+
+            if (timeDifference <= 0) {
+                clearInterval(interval);
+                document.getElementById('timer').innerHTML = '<strong>Lottery has ended!</strong>';
+                return;
+            }
+
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            flip('days', days);
+            flip('hours', hours);
+            flip('minutes', minutes);
+            flip('seconds', seconds);
+        }
+
+        function flip(id, number) {
+            const card = document.getElementById(id);
+            const front = card.querySelector('.flip-card-front .number');
+            const back = card.querySelector('.flip-card-back .number');
+
+            if (front.innerText !== number.toString().padStart(2, '0')) {
+                back.innerText = number.toString().padStart(2, '0');
+                card.classList.add('flipped');
+
+                setTimeout(() => {
+                    front.innerText = back.innerText;
+                    card.classList.remove('flipped');
+                }, 600);
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('entryForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Get game ID from form input
+            var gameId = document.getElementById('gameId').value.trim();
+
+            // Clear previous entries
+            var entryList = document.getElementById('entryList');
+            entryList.innerHTML = '';
+
+            // Get number of entries for the game ID
+            var lotteryCodes = getLotteryCodes(gameId);
+            var numEntries = lotteryCodes.length;
+
+            // Determine pluralization of "entry"
+            var entryText = numEntries === 1 ? 'entry' : 'entries';
+
+            // Display message based on the number of entries
+            if (numEntries > 0) {
+                var message = '<p>Congratulations you have ' + numEntries + ' ' + entryText + ' in the lottery for Game ID ' + gameId + ':</p>';
+                message += '<ul class="entry-list">';
+                for (var i = 0; i < numEntries; i++) {
+                    message += '<li>' + lotteryCodes[i] + '</li>';
+                }
+                message += '</ul>';
+                entryList.innerHTML = message;
+            } else {
+                entryList.innerHTML = '<p>Oops you don\'t have any entries in the lottery yet for Game ID ' + gameId + '.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
