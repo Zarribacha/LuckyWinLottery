@@ -111,7 +111,7 @@
             margin-bottom: 20px;
         }
 
-        #entryForm button {
+        #entryForm button, #depositNowButton {
             padding: 10px 20px;
             border: 2px solid #ffd700;
             border-radius: 10px;
@@ -123,9 +123,21 @@
             box-shadow: 0 0 10px #ffd700;
         }
 
-        #entryForm button:hover {
+        #entryForm button:hover, #depositNowButton:hover {
             background-color: #ffd700;
             color: #8b0000;
+        }
+
+        /* QR code and account till ID */
+        #qrCodeContainer {
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        #qrCodeContainer img {
+            width: 150px;
+            height: 150px;
         }
 
     </style>
@@ -183,6 +195,15 @@
 
         <!-- Live time information -->
         <p>Lottery Live Time: 7 Days</p>
+
+        <!-- Deposit Now Button -->
+        <button id="depositNowButton">Deposit Now</button>
+
+        <!-- QR Code and Account Till ID -->
+        <div id="qrCodeContainer">
+            <p>Account Till ID: 980342992</p>
+            <img id="qrCode" src="https://s12.gifyu.com/images/St1jM.jpg" alt="QR Code">
+        </div>
         
         <!-- Search form -->
         <form id="entryForm">
@@ -205,17 +226,16 @@
             '1258631': ['LTRY-LBELRS49'],
             '1386231': ['LTRY-N7K6H8U3'],
             '1457871': ['LTRY-98PV9BA4'],
-          '1397673': ['LTRY-V2NLL0CP'],
-           '1418049': ['LTRY-015T0E2O'],
+            '1397673': ['LTRY-V2NLL0CP'],
+            '1418049': ['LTRY-015T0E2O'],
             '1463224': ['LTRY-SFBA4RPF'],
-  '1463224': ['LTRY-SFBA4RPF'],
-  '1485425': ['LTRY-Z4A4E8HH'],
-'1028074': ['LTRY-XMMXZIO2', 'INVT-7O51CZAX'],
-'1002489': ['LTRY-PWIDKDEE'],
-'1506655': ['LTRY-VBDE51YF'],
-'1353172': ['LTRY-8SWU3Z5M'],
-'1369258': ['LTRY-VZWZZSTU'],
-'1560295': ['LTRY-N4YK9CQN']
+            '1485425': ['LTRY-Z4A4E8HH'],
+            '1028074': ['LTRY-XMMXZIO2', 'INVT-7O51CZAX'],
+            '1002489': ['LTRY-PWIDKDEE'],
+            '1506655': ['LTRY-VBDE51YF'],
+            '1353172': ['LTRY-8SWU3Z5M'],
+            '1369258': ['LTRY-VZWZZSTU'],
+            '1560295': ['LTRY-N4YK9CQN']
         };
 
         // Function to get predefined lottery codes for a specific game ID
@@ -304,6 +324,12 @@
             } else {
                 entryList.innerHTML = '<p>Oops you don\'t have any entries in the lottery yet for Game ID ' + gameId + '.</p>';
             }
+        });
+
+        // Handle Deposit Now button click
+        document.getElementById('depositNowButton').addEventListener('click', function() {
+            var qrCodeContainer = document.getElementById('qrCodeContainer');
+            qrCodeContainer.style.display = 'block';
         });
     </script>
 </body>
