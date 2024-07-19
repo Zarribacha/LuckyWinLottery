@@ -140,6 +140,10 @@
             height: 150px;
         }
 
+        .flipped .flip-card-inner {
+            transform: rotateX(180deg);
+        }
+
     </style>
 </head>
 <body>
@@ -240,13 +244,13 @@
             '1041772': ['LTRY-H3YGY0BG'],
             '1368782': ['LTRY-M4N6Z7XC'],
             '1505184': ['LTRY-XQMV3B69'],
-             '1233317': ['LTRY-1ZMX648U'],
-             '1449056': ['LTRY-1P4NT20U'],
+            '1233317': ['LTRY-1ZMX648U'],
+            '1449056': ['LTRY-1P4NT20U'],
             '1313464': ['LTRY-5HY5HXPR'],
             '1022371': ['LTRY-ZLIOVFIA'],
-           '1503715': ['LTRY-NRYPBGPU', 'LTRY-BS8GR0VR', 'LTRY-RFZQAK9I', 'LTRY-TTFIYUUP', 'LTRY-YZ1QPX03' 'INVT-705LBMYO', 'INVT-1I4VF29I', 'INVT-FABK9X6W', 'INVT-IO5PQNHV', 'LTRY-AZVLS33O', 'LTRY-GSV62CKU', 'LTRY-JS8TKI3V', 'LTRY-KFJ4I7NS'],
+            '1503715': ['LTRY-NRYPBGPU', 'LTRY-BS8GR0VR', 'LTRY-RFZQAK9I', 'LTRY-TTFIYUUP', 'LTRY-YZ1QPX03', 'INVT-705LBMYO', 'INVT-1I4VF29I', 'INVT-FABK9X6W', 'INVT-IO5PQNHV', 'LTRY-AZVLS33O', 'LTRY-GSV62CKU', 'LTRY-JS8TKI3V', 'LTRY-KFJ4I7NS'],
             '1389324': ['LTRY-NUS6AXJS'],
-             '1491379': ['LTRY-CK6UAVK6']
+            '1491379': ['LTRY-CK6UAVK6']
         };
 
         // Function to get predefined lottery codes for a specific game ID
@@ -260,8 +264,8 @@
             return predefinedLotteryCodes[gameId] ? predefinedLotteryCodes[gameId].length : 0;
         }
 
-        // Set the end time for the lottery (specific date and time in +5 GMT)
-        var endTime = new Date(Date.UTC(2024, 6, 24, 00, 00, 00)); // 23:59:59 GMT+5 is 18:59:59 UTC
+        // Set the end time for the lottery (specific date and time in UTC)
+        var endTime = new Date(Date.UTC(2024, 6, 24, 00, 00, 00)); // July 24, 2024 at 00:00:00 UTC
 
         // Update timer every second
         var interval = setInterval(updateCountdown, 1000);
@@ -269,8 +273,7 @@
 
         function updateCountdown() {
             const now = new Date();
-            const nowUTC = new Date(now.getTime() + now.getTimezoneOffset() * 60000); // Convert local time to UTC
-            const timeDifference = endTime - nowUTC;
+            const timeDifference = endTime - now;
 
             if (timeDifference <= 0) {
                 clearInterval(interval);
